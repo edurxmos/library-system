@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/loans")
 public class LoanController {
 
-    private LoanService loanService;
+    private final LoanService loanService;
 
     public LoanController(LoanService loanService) {
         this.loanService = loanService;
