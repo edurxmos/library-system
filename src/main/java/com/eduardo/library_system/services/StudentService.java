@@ -1,5 +1,6 @@
 package com.eduardo.library_system.services;
 
+import com.eduardo.library_system.dtos.student.StudentRequest;
 import com.eduardo.library_system.dtos.student.StudentResponse;
 import com.eduardo.library_system.entities.Student;
 import com.eduardo.library_system.mappers.StudentMapper;
@@ -26,6 +27,11 @@ public class StudentService {
     public StudentResponse findById(Long id) {
         return studentRepository.findById(id).map(x -> studentMapper.toResponse(x))
                 .orElseThrow(() -> new RuntimeException("Resource not found"));
+    }
+
+    public StudentResponse insert(StudentRequest request) {
+        Student entity = studentRepository.save(studentMapper.toEntity(request));
+        return studentMapper.toResponse(entity);
     }
 
 }
