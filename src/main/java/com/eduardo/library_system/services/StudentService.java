@@ -1,7 +1,11 @@
 package com.eduardo.library_system.services;
 
+import com.eduardo.library_system.dtos.student.StudentResponse;
+import com.eduardo.library_system.entities.Student;
 import com.eduardo.library_system.mappers.StudentMapper;
 import com.eduardo.library_system.repositories.StudentRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,6 +17,10 @@ public class StudentService {
     public StudentService(StudentRepository studentRepository, StudentMapper studentMapper) {
         this.studentRepository = studentRepository;
         this.studentMapper = studentMapper;
+    }
+
+    public Page<StudentResponse> findAll(Pageable pageable) {
+        return studentRepository.findAll(pageable).map(x -> studentMapper.toResponse(x));
     }
 
 }
