@@ -23,4 +23,9 @@ public class StudentService {
         return studentRepository.findAll(pageable).map(x -> studentMapper.toResponse(x));
     }
 
+    public StudentResponse findById(Long id) {
+        return studentRepository.findById(id).map(x -> studentMapper.toResponse(x))
+                .orElseThrow(() -> new RuntimeException("Resource not found"));
+    }
+
 }
