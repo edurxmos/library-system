@@ -34,4 +34,11 @@ public class StudentService {
         return studentMapper.toResponse(entity);
     }
 
+    public StudentResponse update(Long id, StudentRequest request) {
+        Student entity = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Resource not found"));
+        studentMapper.updateEntity(request, entity);
+        entity = studentRepository.save(entity);
+        return studentMapper.toResponse(entity);
+    }
+
 }

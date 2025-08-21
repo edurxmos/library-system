@@ -22,4 +22,11 @@ public class StudentMapper {
                 entity.getGrade(), entity.getClassroom());
     }
 
+    public void updateEntity(StudentRequest request, Student entity) {
+        entity.setName(request.name());
+        entity.setEmail(request.email());
+        entity.setGrade(request.grade());
+        entity.setClassroom(request.classroom());
+    }
+
 }
