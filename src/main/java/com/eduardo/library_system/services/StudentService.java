@@ -41,4 +41,12 @@ public class StudentService {
         return studentMapper.toResponse(entity);
     }
 
+    public void delete(Long id) {
+        if (studentRepository.existsById(id)) {
+            studentRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Resource not found");
+        }
+    }
+
 }
