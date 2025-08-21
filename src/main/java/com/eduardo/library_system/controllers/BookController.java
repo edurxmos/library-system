@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,4 +24,10 @@ public class BookController {
     public ResponseEntity<Page<BookResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(bookService.findAll(pageable));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<BookResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.findById(id));
+    }
+
 }

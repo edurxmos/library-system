@@ -24,4 +24,10 @@ public class BookService {
         return bookRepository.findAll(pageable).map(x -> bookMapper.toResponse(x));
     }
 
+    @Transactional(readOnly = true)
+    public BookResponse findById(Long id) {
+        return bookRepository.findById(id).map(x -> bookMapper.toResponse(x))
+                .orElseThrow(() -> new RuntimeException("Resource not found"));
+    }
+
 }
