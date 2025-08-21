@@ -13,6 +13,7 @@ public class BookMapper {
         Book entity = new Book();
         entity.setTitle(request.title());
         entity.setAuthor(request.author());
+        entity.setAvailable(true);
         return entity;
     }
 

@@ -1,6 +1,8 @@
 package com.eduardo.library_system.services;
 
+import com.eduardo.library_system.dtos.book.BookRequest;
 import com.eduardo.library_system.dtos.book.BookResponse;
+import com.eduardo.library_system.entities.Book;
 import com.eduardo.library_system.mappers.BookMapper;
 import com.eduardo.library_system.repositories.BookRepository;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,12 @@ public class BookService {
     public BookResponse findById(Long id) {
         return bookRepository.findById(id).map(x -> bookMapper.toResponse(x))
                 .orElseThrow(() -> new RuntimeException("Resource not found"));
+    }
+
+    @Transactional
+    public BookResponse insert(BookRequest request) {
+        Book entity = bookRepository.save(bookMapper.toEntity(request));
+        return bookMapper.toResponse(entity);
     }
 
 }
