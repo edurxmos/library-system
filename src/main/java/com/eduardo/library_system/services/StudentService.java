@@ -8,6 +8,8 @@ import com.eduardo.library_system.repositories.StudentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class StudentService {
@@ -20,20 +22,24 @@ public class StudentService {
         this.studentMapper = studentMapper;
     }
 
+    @Transactional(readOnly = true)
     public Page<StudentResponse> findAll(Pageable pageable) {
         return studentRepository.findAll(pageable).map(x -> studentMapper.toResponse(x));
     }
 
+    @Transactional(readOnly = true)
     public StudentResponse findById(Long id) {
         return studentRepository.findById(id).map(x -> studentMapper.toResponse(x))
                 .orElseThrow(() -> new RuntimeException("Resource not found"));
     }
 
+    @Transactional
     public StudentResponse insert(StudentRequest request) {
         Student entity = studentRepository.save(studentMapper.toEntity(request));
         return studentMapper.toResponse(entity);
     }
 
+    @Transactional
     public StudentResponse update(Long id, StudentRequest request) {
         Student entity = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Resource not found"));
         studentMapper.updateEntity(request, entity);
@@ -41,6 +47,7 @@ public class StudentService {
         return studentMapper.toResponse(entity);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
