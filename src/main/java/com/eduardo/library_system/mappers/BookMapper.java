@@ -21,4 +21,9 @@ public class BookMapper {
         return new BookResponse(entity.getId(), entity.getTitle(), entity.getAuthor(), entity.getAvailable());
     }
 
+    public void updateEntity(BookRequest request, Book entity) {
+        entity.setTitle(request.title());
+        entity.setAuthor(request.author());
+    }
+
 }

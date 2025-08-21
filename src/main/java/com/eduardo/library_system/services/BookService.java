@@ -38,4 +38,12 @@ public class BookService {
         return bookMapper.toResponse(entity);
     }
 
+    @Transactional
+    public BookResponse update(Long id, BookRequest request) {
+        Book entity = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Resource not found"));
+        bookMapper.updateEntity(request, entity);
+        entity = bookRepository.save(entity);
+        return bookMapper.toResponse(entity);
+    }
+
 }
