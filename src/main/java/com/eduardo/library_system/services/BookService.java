@@ -8,6 +8,7 @@ import com.eduardo.library_system.repositories.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -44,6 +45,15 @@ public class BookService {
         bookMapper.updateEntity(request, entity);
         entity = bookRepository.save(entity);
         return bookMapper.toResponse(entity);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Resource not found");
+        }
     }
 
 }
