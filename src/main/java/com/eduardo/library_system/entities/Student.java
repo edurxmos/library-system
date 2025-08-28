@@ -3,6 +3,9 @@ package com.eduardo.library_system.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "student")
 @Data
@@ -21,5 +24,8 @@ public class Student {
     private char grade;
 
     private char classroom;
+
+    @OneToMany(mappedBy = "student")
+    private List<Loan> loans = new ArrayList<>();
 
 }
