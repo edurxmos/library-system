@@ -1,8 +1,12 @@
 package com.eduardo.library_system.services;
 
+import com.eduardo.library_system.dtos.loan.LoanResponse;
 import com.eduardo.library_system.mappers.LoanMapper;
 import com.eduardo.library_system.repositories.LoanRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LoanService {
@@ -14,4 +18,10 @@ public class LoanService {
         this.loanRepository = loanRepository;
         this.loanMapper = loanMapper;
     }
+
+    @Transactional(readOnly = true)
+    public Page<LoanResponse> findAll(Pageable pageable) {
+        return loanRepository.findAll(pageable).map(x -> loanMapper.toResponse(x));
+    }
+
 }
