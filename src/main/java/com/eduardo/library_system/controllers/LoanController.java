@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,11 @@ public class LoanController {
     @GetMapping
     public ResponseEntity<Page<LoanResponse>> findAll(Pageable pageable) {
         return ResponseEntity.ok(loanService.findAll(pageable));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LoanResponse> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.findById(id));
     }
 
 }

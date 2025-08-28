@@ -24,4 +24,10 @@ public class LoanService {
         return loanRepository.findAll(pageable).map(x -> loanMapper.toResponse(x));
     }
 
+    @Transactional(readOnly = true)
+    public LoanResponse findById(Long id) {
+        return loanRepository.findById(id).map(x -> loanMapper.toResponse(x))
+                .orElseThrow(() -> new RuntimeException("Resource not found"));
+    }
+
 }
