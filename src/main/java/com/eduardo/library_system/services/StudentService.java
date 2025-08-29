@@ -5,7 +5,9 @@ import com.eduardo.library_system.dtos.student.StudentResponse;
 import com.eduardo.library_system.entities.Student;
 import com.eduardo.library_system.mappers.StudentMapper;
 import com.eduardo.library_system.repositories.StudentRepository;
+import com.eduardo.library_system.services.exceptions.DataBaseException;
 import com.eduardo.library_system.services.exceptions.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,10 +52,14 @@ public class StudentService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (studentRepository.existsById(id)) {
-            studentRepository.deleteById(id);
-        } else {
-            throw new NotFoundException("Resource not found");
+        try {
+            if (studentRepository.existsById(id)) {
+                studentRepository.deleteById(id);
+            } else {
+                throw new NotFoundException("Resource not found");
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Relational integrity violation");
         }
     }
 

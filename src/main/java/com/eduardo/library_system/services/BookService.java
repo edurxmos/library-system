@@ -5,7 +5,9 @@ import com.eduardo.library_system.dtos.book.BookResponse;
 import com.eduardo.library_system.entities.Book;
 import com.eduardo.library_system.mappers.BookMapper;
 import com.eduardo.library_system.repositories.BookRepository;
+import com.eduardo.library_system.services.exceptions.DataBaseException;
 import com.eduardo.library_system.services.exceptions.NotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,10 +52,14 @@ public class BookService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-        } else {
-            throw new NotFoundException("Resource not found");
+        try {
+            if (bookRepository.existsById(id)) {
+                bookRepository.deleteById(id);
+            } else {
+                throw new NotFoundException("Resource not found");
+            }
+        } catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Relational integrity violation");
         }
     }
 
