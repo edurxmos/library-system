@@ -5,6 +5,7 @@ import com.eduardo.library_system.dtos.book.BookResponse;
 import com.eduardo.library_system.entities.Book;
 import com.eduardo.library_system.mappers.BookMapper;
 import com.eduardo.library_system.repositories.BookRepository;
+import com.eduardo.library_system.services.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class BookService {
     @Transactional(readOnly = true)
     public BookResponse findById(Long id) {
         return bookRepository.findById(id).map(x -> bookMapper.toResponse(x))
-                .orElseThrow(() -> new RuntimeException("Resource not found"));
+                .orElseThrow(() -> new NotFoundException("Resource not found"));
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class BookService {
 
     @Transactional
     public BookResponse update(Long id, BookRequest request) {
-        Book entity = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Resource not found"));
+        Book entity = bookRepository.findById(id).orElseThrow(() -> new NotFoundException("Resource not found"));
         bookMapper.updateEntity(request, entity);
         entity = bookRepository.save(entity);
         return bookMapper.toResponse(entity);
@@ -52,7 +53,7 @@ public class BookService {
         if (bookRepository.existsById(id)) {
             bookRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Resource not found");
+            throw new NotFoundException("Resource not found");
         }
     }
 

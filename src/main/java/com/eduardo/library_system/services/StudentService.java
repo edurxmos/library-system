@@ -5,6 +5,7 @@ import com.eduardo.library_system.dtos.student.StudentResponse;
 import com.eduardo.library_system.entities.Student;
 import com.eduardo.library_system.mappers.StudentMapper;
 import com.eduardo.library_system.repositories.StudentRepository;
+import com.eduardo.library_system.services.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class StudentService {
     @Transactional(readOnly = true)
     public StudentResponse findById(Long id) {
         return studentRepository.findById(id).map(x -> studentMapper.toResponse(x))
-                .orElseThrow(() -> new RuntimeException("Resource not found"));
+                .orElseThrow(() -> new NotFoundException("Resource not found"));
     }
 
     @Transactional
@@ -41,7 +42,7 @@ public class StudentService {
 
     @Transactional
     public StudentResponse update(Long id, StudentRequest request) {
-        Student entity = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Resource not found"));
+        Student entity = studentRepository.findById(id).orElseThrow(() -> new NotFoundException("Resource not found"));
         studentMapper.updateEntity(request, entity);
         entity = studentRepository.save(entity);
         return studentMapper.toResponse(entity);
@@ -52,7 +53,7 @@ public class StudentService {
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Resource not found");
+            throw new NotFoundException("Resource not found");
         }
     }
 

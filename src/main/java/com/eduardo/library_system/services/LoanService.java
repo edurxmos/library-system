@@ -8,6 +8,7 @@ import com.eduardo.library_system.mappers.LoanMapper;
 import com.eduardo.library_system.repositories.BookRepository;
 import com.eduardo.library_system.repositories.LoanRepository;
 import com.eduardo.library_system.repositories.StudentRepository;
+import com.eduardo.library_system.services.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,14 @@ public class LoanService {
     @Transactional(readOnly = true)
     public LoanResponse findById(Long id) {
         return loanRepository.findById(id).map(x -> loanMapper.toResponse(x))
-                .orElseThrow(() -> new RuntimeException("Resource not found"));
+                .orElseThrow(() -> new NotFoundException("Resource not found"));
     }
 
     // irei refatorar e implementar regras de negócio
     @Transactional
     public LoanResponse createLoan(Long studentId, Long bookId) {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new RuntimeException("Resource not found"));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Resource not found"));
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NotFoundException("Resource not found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Resource not found"));
 
         Loan loan = new Loan();
         loan.setStudent(student);
