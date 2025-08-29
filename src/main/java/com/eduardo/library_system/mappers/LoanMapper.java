@@ -1,6 +1,8 @@
 package com.eduardo.library_system.mappers;
 
+import com.eduardo.library_system.dtos.book.BookMinResponse;
 import com.eduardo.library_system.dtos.loan.LoanResponse;
+import com.eduardo.library_system.dtos.student.StudentMinResponse;
 import com.eduardo.library_system.entities.Book;
 import com.eduardo.library_system.entities.Loan;
 import com.eduardo.library_system.entities.Student;
@@ -17,8 +19,9 @@ public class LoanMapper {
     }
 
     public LoanResponse toResponse(Loan entity) {
-        return new LoanResponse(entity.getId(), entity.getStudent().getId(), entity.getBook().getId(),
-                entity.getLoanDate(), entity.getReturnDate());
+        StudentMinResponse studentMinResponse = new StudentMinResponse(entity.getStudent().getId(), entity.getStudent().getName(), entity.getStudent().getEmail());
+        BookMinResponse bookMinResponse = new BookMinResponse(entity.getBook().getId(), entity.getBook().getTitle(), entity.getBook().getAuthor());
+        return new LoanResponse(entity.getId(), studentMinResponse, bookMinResponse, entity.getLoanDate(), entity.getReturnDate());
     }
 
 }
