@@ -27,4 +27,8 @@ public class Book {
     @OneToMany(mappedBy = "book")
     private List<Loan> loans = new ArrayList<>();
 
+    public void markAsUnavailable() {
+        this.available = false;
+    }
+
 }
