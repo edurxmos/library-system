@@ -8,6 +8,7 @@ import com.eduardo.library_system.mappers.LoanMapper;
 import com.eduardo.library_system.repositories.BookRepository;
 import com.eduardo.library_system.repositories.LoanRepository;
 import com.eduardo.library_system.repositories.StudentRepository;
+import com.eduardo.library_system.services.exceptions.BookUnavailableException;
 import com.eduardo.library_system.services.exceptions.NotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,22 +43,25 @@ public class LoanService {
                 .orElseThrow(() -> new NotFoundException("Resource not found"));
     }
 
-    // irei refatorar e implementar regras de negócio
     @Transactional
     public LoanResponse createLoan(Long studentId, Long bookId) {
-        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NotFoundException("Resource not found"));
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Resource not found"));
+        Student student = studentRepository.findById(studentId).orElseThrow(() -> new NotFoundException("Student not found"));
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book not found"));
+
+        if (!book.getAvailable()) {
+            throw new BookUnavailableException("Book is already loaned");
+        }
 
         Loan loan = new Loan();
         loan.setStudent(student);
         loan.setBook(book);
         loan.setLoanDate(LocalDate.now());
         loan.setReturnDate(LocalDate.now().plusDays(7));
+        book.markAsUnavailable();
         loan.setLoaned(true);
         loan = loanRepository.save(loan);
 
         return loanMapper.toResponse(loan);
-
     }
 
 }

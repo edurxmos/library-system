@@ -1,6 +1,7 @@
 package com.eduardo.library_system.controllers.handlers;
 
 import com.eduardo.library_system.dtos.CustomError;
+import com.eduardo.library_system.services.exceptions.BookUnavailableException;
 import com.eduardo.library_system.services.exceptions.DataBaseException;
 import com.eduardo.library_system.services.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,13 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(DataBaseException.class)
     public ResponseEntity<CustomError> dataBaseException(DataBaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
+        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status.value()).body(err);
+    }
+
+    @ExceptionHandler(BookUnavailableException.class)
+    public ResponseEntity<CustomError> bookUnavailableException(BookUnavailableException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.CONFLICT;
         CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status.value()).body(err);
     }
