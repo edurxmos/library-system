@@ -64,4 +64,16 @@ public class LoanService {
         return loanMapper.toResponse(loan);
     }
 
+    @Transactional
+    public LoanResponse closeLoan(Long id) {
+        Loan loan = loanRepository.findById(id).orElseThrow(() -> new NotFoundException("Loan not found"));
+
+        loan.setReturnDate(LocalDate.now());
+        loan.setLoaned(false);
+        loan.getBook().setAvailable(true);
+        loanRepository.save(loan);
+
+        return loanMapper.toResponse(loan);
+    }
+
 }

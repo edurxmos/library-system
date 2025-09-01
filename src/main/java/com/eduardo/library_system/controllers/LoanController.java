@@ -33,4 +33,9 @@ public class LoanController {
         return ResponseEntity.status(HttpStatus.CREATED).body(loanService.createLoan(studentId, bookId));
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<LoanResponse> closeLoan(@PathVariable Long id) {
+        return ResponseEntity.ok(loanService.closeLoan(id));
+    }
+
 }
