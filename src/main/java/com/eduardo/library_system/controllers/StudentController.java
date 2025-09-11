@@ -3,6 +3,7 @@ package com.eduardo.library_system.controllers;
 import com.eduardo.library_system.dtos.student.StudentRequest;
 import com.eduardo.library_system.dtos.student.StudentResponse;
 import com.eduardo.library_system.services.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,12 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<StudentResponse> insert(@RequestBody StudentRequest request) {
+    public ResponseEntity<StudentResponse> insert(@RequestBody @Valid StudentRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.insert(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudentResponse> update(@PathVariable Long id, @RequestBody StudentRequest request) {
+    public ResponseEntity<StudentResponse> update(@PathVariable Long id, @RequestBody @Valid StudentRequest request) {
         return ResponseEntity.ok(studentService.update(id, request));
     }
 

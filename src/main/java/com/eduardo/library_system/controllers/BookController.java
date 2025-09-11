@@ -3,6 +3,7 @@ package com.eduardo.library_system.controllers;
 import com.eduardo.library_system.dtos.book.BookRequest;
 import com.eduardo.library_system.dtos.book.BookResponse;
 import com.eduardo.library_system.services.BookService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,12 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookResponse> insert(@RequestBody BookRequest request) {
+    public ResponseEntity<BookResponse> insert(@RequestBody @Valid BookRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.insert(request));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponse> update(@PathVariable Long id, @RequestBody BookRequest request) {
+    public ResponseEntity<BookResponse> update(@PathVariable Long id, @RequestBody @Valid BookRequest request) {
         return ResponseEntity.ok(bookService.update(id, request));
     }
 
