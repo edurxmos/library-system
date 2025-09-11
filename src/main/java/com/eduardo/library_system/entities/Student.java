@@ -21,9 +21,11 @@ public class Student {
     @Column(nullable = false, unique = true)
     private String email;
 
-    private char grade;
+    @Column(nullable = false, length = 1)
+    private String grade;
 
-    private char classroom;
+    @Column(nullable = false, length = 1)
+    private String classroom;
 
     @OneToMany(mappedBy = "student")
     private List<Loan> loans = new ArrayList<>();
