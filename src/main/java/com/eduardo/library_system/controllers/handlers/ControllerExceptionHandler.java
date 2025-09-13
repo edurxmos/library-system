@@ -1,12 +1,15 @@
 package com.eduardo.library_system.controllers.handlers;
 
-import com.eduardo.library_system.dtos.CustomError;
+import com.eduardo.library_system.dtos.errors.CustomError;
+import com.eduardo.library_system.dtos.errors.ValidationError;
 import com.eduardo.library_system.services.exceptions.BookUnavailableException;
 import com.eduardo.library_system.services.exceptions.DataBaseException;
 import com.eduardo.library_system.services.exceptions.NotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -34,6 +37,16 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.CONFLICT;
         CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status.value()).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<CustomError> methodArgumentNotValidException(MethodArgumentNotValidException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
+        ValidationError err = new ValidationError(Instant.now(), status.value(), "Invalid data", request.getRequestURI());
+        for (FieldError f : e.getBindingResult().getFieldErrors()) {
+            err.addError(f.getField(), f.getDefaultMessage());
+        }
+        return ResponseEntity.status(status).body(err);
     }
 
 }
