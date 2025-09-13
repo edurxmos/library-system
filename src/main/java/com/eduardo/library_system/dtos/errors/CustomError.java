@@ -1,4 +1,4 @@
-package com.eduardo.library_system.dtos;
+package com.eduardo.library_system.dtos.errors;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
