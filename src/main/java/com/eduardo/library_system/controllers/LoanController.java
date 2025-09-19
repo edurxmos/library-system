@@ -1,6 +1,7 @@
 package com.eduardo.library_system.controllers;
 
 import com.eduardo.library_system.dtos.loan.LoanResponse;
+import com.eduardo.library_system.projections.LoanUserProjections;
 import com.eduardo.library_system.services.LoanService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,5 +38,11 @@ public class LoanController {
     public ResponseEntity<LoanResponse> closeLoan(@PathVariable Long id) {
         return ResponseEntity.ok(loanService.closeLoan(id));
     }
+
+    @GetMapping("/student/{studentId}")
+    public ResponseEntity<Page<LoanUserProjections>> findLoanByStudent(@PathVariable Long studentId, Pageable pageable) {
+        return ResponseEntity.ok(loanService.findLoansByStudent(studentId, pageable));
+    }
+
 
 }
