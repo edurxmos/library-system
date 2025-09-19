@@ -5,6 +5,7 @@ import com.eduardo.library_system.entities.Book;
 import com.eduardo.library_system.entities.Loan;
 import com.eduardo.library_system.entities.Student;
 import com.eduardo.library_system.mappers.LoanMapper;
+import com.eduardo.library_system.projections.LoanUserProjections;
 import com.eduardo.library_system.repositories.BookRepository;
 import com.eduardo.library_system.repositories.LoanRepository;
 import com.eduardo.library_system.repositories.StudentRepository;
@@ -75,5 +76,14 @@ public class LoanService {
 
         return loanMapper.toResponse(loan);
     }
+
+        @Transactional
+        public Page<LoanUserProjections> findLoansByStudent(Long studentId, Pageable pageable) {
+            if(!studentRepository.existsById(studentId)) {
+                throw new NotFoundException("Student not found");
+            }
+
+            return loanRepository.findLoansByStudent(studentId, pageable);
+        }
 
 }
