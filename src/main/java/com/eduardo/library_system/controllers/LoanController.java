@@ -1,6 +1,7 @@
 package com.eduardo.library_system.controllers;
 
 import com.eduardo.library_system.dtos.loan.LoanResponse;
+import com.eduardo.library_system.projections.LoanActiveProjections;
 import com.eduardo.library_system.projections.LoanUserProjections;
 import com.eduardo.library_system.services.LoanService;
 import org.springframework.data.domain.Page;
@@ -44,5 +45,9 @@ public class LoanController {
         return ResponseEntity.ok(loanService.findLoansByStudent(studentId, pageable));
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<Page<LoanActiveProjections>> findActiveLoans(Pageable pageable) {
+        return ResponseEntity.ok(loanService.findActiveLoans(pageable));
+    }
 
 }
