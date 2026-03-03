@@ -1,15 +1,23 @@
 package com.eduardo.library_system.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@EqualsAndHashCode(of = "id")
+
 @Entity
 @Table(name = "book")
-@Data
 public class Book {
+
+    public Book(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +34,16 @@ public class Book {
 
     @OneToMany(mappedBy = "book")
     private List<Loan> loans = new ArrayList<>();
+
+    @PrePersist
+    public void markAsAvailable() {
+        this.available = true;
+    }
+
+    public void update(String title, String author) {
+        this.title = title;
+        this.author = author;
+    }
 
     public void markAsUnavailable() {
         this.available = false;

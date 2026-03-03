@@ -11,11 +11,7 @@ import org.springframework.stereotype.Component;
 public class BookMapper {
 
     public Book toEntity(BookRequest request) {
-        Book entity = new Book();
-        entity.setTitle(request.title());
-        entity.setAuthor(request.author());
-        entity.setAvailable(true);
-        return entity;
+        return new Book(request.title(), request.author());
     }
 
     public BookResponse toResponse(Book entity) {
@@ -27,8 +23,7 @@ public class BookMapper {
     }
 
     public void updateEntity(BookRequest request, Book entity) {
-        entity.setTitle(request.title());
-        entity.setAuthor(request.author());
+        entity.update(request.title(), request.author());
     }
 
 }
