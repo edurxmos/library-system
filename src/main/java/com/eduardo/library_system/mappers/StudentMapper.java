@@ -9,12 +9,7 @@ import org.springframework.stereotype.Component;
 public class StudentMapper {
 
     public Student toEntity(StudentRequest request) {
-        Student entity = new Student();
-        entity.setName(request.name());
-        entity.setEmail(request.email());
-        entity.setGrade(request.grade());
-        entity.setClassroom(request.classroom());
-        return entity;
+        return new Student(request.name(), request.email(), request.grade(), request.classroom());
     }
 
     public StudentResponse toResponse(Student entity) {
@@ -22,11 +17,9 @@ public class StudentMapper {
                 entity.getGrade(), entity.getClassroom());
     }
 
-    public void updateEntity(StudentRequest request, Student entity) {
-        entity.setName(request.name());
-        entity.setEmail(request.email());
-        entity.setGrade(request.grade());
-        entity.setClassroom(request.classroom());
+    public Student updateEntity(StudentRequest request, Student entity) {
+        entity.update(request.name(), request.email(), request.grade(), request.classroom());
+        return entity;
     }
 
 }

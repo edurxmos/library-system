@@ -6,10 +6,20 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@EqualsAndHashCode(of = "id")
+
 @Entity
 @Table(name = "student")
-@Data
 public class Student {
+
+    public Student(String name, String email, String grade, String classroom) {
+        this.name = name;
+        this.email = email;
+        this.grade = grade;
+        this.classroom = classroom;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,5 +39,12 @@ public class Student {
 
     @OneToMany(mappedBy = "student")
     private List<Loan> loans = new ArrayList<>();
+
+    public void update(String name, String email, String grade, String classroom) {
+        this.name = name;
+        this.email = email;
+        this.grade = grade;
+        this.classroom = classroom;
+    }
 
 }
