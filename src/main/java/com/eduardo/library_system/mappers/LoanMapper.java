@@ -12,10 +12,7 @@ import org.springframework.stereotype.Component;
 public class LoanMapper {
 
     public Loan toEntity(Student student, Book book) {
-        Loan entity = new Loan();
-        entity.setStudent(student);
-        entity.setBook(book);
-        return entity;
+        return new Loan(student, book);
     }
 
     public LoanResponse toResponse(Loan entity) {

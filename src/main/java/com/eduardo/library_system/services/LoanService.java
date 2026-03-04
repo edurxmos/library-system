@@ -50,18 +50,8 @@ public class LoanService {
         Student student = studentRepository.findById(studentId).orElseThrow(() -> new NotFoundException("Student not found"));
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new NotFoundException("Book not found"));
 
-        if (!book.getAvailable()) {
-            throw new BookUnavailableException("Book is already loaned");
-        }
-
-        Loan loan = new Loan();
-        loan.setStudent(student);
-        loan.setBook(book);
-        loan.setLoanDate(LocalDate.now());
-        loan.setReturnDate(LocalDate.now().plusDays(7));
-        book.markAsUnavailable();
-        loan.setLoaned(true);
-        loan = loanRepository.save(loan);
+        Loan loan = new Loan(student, book);
+        loanRepository.save(loan);
 
         return loanMapper.toResponse(loan);
     }
@@ -72,7 +62,7 @@ public class LoanService {
 
         loan.setReturnDate(LocalDate.now());
         loan.setLoaned(false);
-        loan.getBook().setAvailable(true);
+        loan.getBook().markAsAvailable();
         loanRepository.save(loan);
 
         return loanMapper.toResponse(loan);

@@ -1,14 +1,32 @@
 package com.eduardo.library_system.entities;
 
+import com.eduardo.library_system.services.exceptions.BookUnavailableException;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@EqualsAndHashCode(of = "id")
+
 @Entity
 @Table(name = "loan")
-@Data
 public class Loan {
+
+    public Loan(Student student, Book book) {
+        if (!book.getAvailable()) {
+            throw new BookUnavailableException("Book is already loaned");
+        }
+
+        this.student = student;
+        this.book = book;
+        this.loanDate = LocalDate.now();
+        this.returnDate = LocalDate.now().plusDays(7);
+        this.loaned = true;
+
+        book.markAsUnavailable();
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
