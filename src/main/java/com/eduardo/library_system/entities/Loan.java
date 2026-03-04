@@ -47,4 +47,9 @@ public class Loan {
     @Column(nullable = false)
     private Boolean loaned;
 
+    public void close() {
+        this.returnDate = LocalDate.now();
+        this.loaned = false;
+        this.book.markAsAvailable();
+    }
 }

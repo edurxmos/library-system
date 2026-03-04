@@ -60,9 +60,7 @@ public class LoanService {
     public LoanResponse closeLoan(Long id) {
         Loan loan = loanRepository.findById(id).orElseThrow(() -> new NotFoundException("Loan not found"));
 
-        loan.setReturnDate(LocalDate.now());
-        loan.setLoaned(false);
-        loan.getBook().markAsAvailable();
+        loan.close();
         loanRepository.save(loan);
 
         return loanMapper.toResponse(loan);
