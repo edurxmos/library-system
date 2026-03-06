@@ -1,0 +1,8 @@
+CREATE TABLE printjob (
+    id BIGSERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL,
+    requester VARCHAR(255) NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    quantity BIGINT NOT NULL,
+    total DECIMAL(10,2) NOT NULL
+);
