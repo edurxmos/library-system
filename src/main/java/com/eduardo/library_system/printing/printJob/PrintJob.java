@@ -17,6 +17,15 @@ import java.time.LocalDateTime;
 @Table(name = "printjob")
 public class PrintJob {
 
+
+    public PrintJob(String requester, PrintType type, int quantity) {
+        this.date = LocalDateTime.now();
+        this.requester = requester;
+        this.type = type;
+        this.quantity = quantity;
+        this.total = BigDecimal.valueOf(type.getPrice() * quantity);
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
