@@ -1,0 +1,4 @@
+package com.eduardo.library_system.library.book.dtos;
+
+public record BookResponse(Long id, String title, String author, boolean available) {
+}
