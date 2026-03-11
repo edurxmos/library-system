@@ -3,6 +3,9 @@ package com.eduardo.library_system.printing.printJob;
 import com.eduardo.library_system.printing.printJob.dtos.PrintJobMapper;
 import com.eduardo.library_system.printing.printJob.dtos.PrintJobRequest;
 import com.eduardo.library_system.printing.printJob.dtos.PrintJobResponse;
+import com.eduardo.library_system.printing.printJob.dtos.PrintJobSummaryResponse;
+import com.eduardo.library_system.printing.printJob.projections.PrintJobProjection;
+import com.eduardo.library_system.printing.printJob.projections.PrintSummaryProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -30,9 +33,11 @@ public class PrintJobService {
         return printJobMapper.toResponse(entity);
     }
 
-    @Transactional
-    public Page<> summary() {
-
+    @Transactional(readOnly = true)
+    public PrintJobSummaryResponse summary(Pageable pageable) {
+        Page<PrintJobProjection> projections = printJobRepository.findAllSummary(pageable);
+        PrintSummaryProjection summaryProjection = printJobRepository.summary();
+        return new PrintJobSummaryResponse(projections, summaryProjection);
     }
 
 }

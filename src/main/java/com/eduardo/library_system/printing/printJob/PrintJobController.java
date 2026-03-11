@@ -2,6 +2,7 @@ package com.eduardo.library_system.printing.printJob;
 
 import com.eduardo.library_system.printing.printJob.dtos.PrintJobRequest;
 import com.eduardo.library_system.printing.printJob.dtos.PrintJobResponse;
+import com.eduardo.library_system.printing.printJob.dtos.PrintJobSummaryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -26,6 +27,11 @@ public class PrintJobController {
     @PostMapping
     public ResponseEntity<PrintJobResponse> insert(@RequestBody PrintJobRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(printJobService.insert(request));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<PrintJobSummaryResponse> summary(Pageable pageable) {
+        return ResponseEntity.ok(printJobService.summary(pageable));
     }
 
 }
