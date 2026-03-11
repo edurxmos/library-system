@@ -30,4 +30,9 @@ public class PrintJobService {
         return printJobMapper.toResponse(entity);
     }
 
+    @Transactional
+    public Page<> summary() {
+
+    }
+
 }
